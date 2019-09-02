@@ -15,3 +15,5 @@ build:
 	npm run build
 test:
 	npm test
+testw:
+	npm test -- --watch
