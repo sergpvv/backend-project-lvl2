@@ -18,4 +18,4 @@ $ make install
 ```sh
 $ gendiff [options] <filepath1> <filepath2>
 ```
-[![asciicast](https://asciinema.org/a/l8Gc4cPprXoPpFSeDW6lhlzEt.svg)](https://asciinema.org/a/l8Gc4cPprXoPpFSeDW6lhlzEt)
+[![asciicast](https://asciinema.org/a/amHVxKbyUwoAxRKVnn27whmH9.svg)](https://asciinema.org/a/amHVxKbyUwoAxRKVnn27whmH9)

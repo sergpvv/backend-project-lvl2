@@ -1,19 +1,23 @@
 import { readFileSync } from 'fs';
 
-import genDiff from '../src/genDiff';
+import getDiff from '../src/parsers';
 
-test('plain json', () => {
-  const path = `${__dirname}/__fixtures__/`;
+let path;
+
+beforeEach(() => {
+  path = `${__dirname}/__fixtures__/`;
+});
+
+test('json', () => {
   const before = `${path}before.json`;
   const after = `${path}after.json`;
   const diff = String(readFileSync(`${path}diff1`));
-  expect(genDiff(before, after)).toBe(diff);
+  expect(getDiff(before, after)).toBe(diff);
 });
 
-test('plain yaml', () => {
-  const path = `${__dirname}/__fixtures__/`;
+test('yaml', () => {
   const before = `${path}before.yml`;
   const after = `${path}after.yml`;
   const diff = String(readFileSync(`${path}diff1`));
-  expect(genDiff(before, after)).toBe(diff);
+  expect(getDiff(before, after)).toBe(diff);
 });
