@@ -1,6 +1,10 @@
 import { readFileSync } from 'fs';
 
-import * as _ from 'lodash';
+import path from 'path';
+
+import _ from 'lodash';
+
+import yaml from 'js-yaml';
 
 const findDiff = (obj1, obj2) => {
   const result = _.union(_.keys(obj1), _.keys(obj2)).reduce((acc, key) => {
@@ -23,8 +27,19 @@ const findDiff = (obj1, obj2) => {
   return `${result}}\n`;
 };
 
+const parseFunc = {
+  '.json': (data) => JSON.parse(data),
+  '.yml': (data) => yaml.safeLoad(data),
+};
+
+const parse = (filepath) => {
+  const data = String(readFileSync(filepath));
+  const ext = path.extname(filepath);
+  return parseFunc[ext](data);
+};
+
 export default (filepath1, filepath2) => {
-  const data1 = JSON.parse(readFileSync(filepath1));
-  const data2 = JSON.parse(readFileSync(filepath2));
-  return findDiff(data1, data2);
+  const obj1 = parse(filepath1);
+  const obj2 = parse(filepath2);
+  return findDiff(obj1, obj2);
 };

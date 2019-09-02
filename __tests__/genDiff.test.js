@@ -9,3 +9,11 @@ test('plain json', () => {
   const diff = String(readFileSync(`${path}diff1`));
   expect(genDiff(before, after)).toBe(diff);
 });
+
+test('plain yaml', () => {
+  const path = `${__dirname}/__fixtures__/`;
+  const before = `${path}before.yml`;
+  const after = `${path}after.yml`;
+  const diff = String(readFileSync(`${path}diff1`));
+  expect(genDiff(before, after)).toBe(diff);
+});
