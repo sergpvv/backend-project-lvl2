@@ -10,16 +10,9 @@ beforeEach(() => {
   diff = String(readFileSync(`${path}diff`));
 });
 
-test('json', () => {
-  const before1 = `${path}before1.json`;
-  const after1 = `${path}after1.json`;
-  expect(getDiff(before1, after1)).toBe(diff);
-});
-
-test('yaml', () => {
-  const before2 = `${path}before2.yml`;
-  const after2 = `${path}after2.yml`;
-  expect(getDiff(before2, after2)).toBe(diff);
+test('json, yml', () => {
+  expect(getDiff(`${path}before1.json`, `${path}after1.json`)).toBe(diff);
+  expect(getDiff(`${path}before2.yml`, `${path}after2.yml`)).toBe(diff);
 });
 
 test('ini', () => {
