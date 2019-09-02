@@ -6,6 +6,8 @@ import _ from 'lodash';
 
 import yaml from 'js-yaml';
 
+import ini from 'ini';
+
 const genDiff = (obj1, obj2) => {
   const result = _.union(_.keys(obj1), _.keys(obj2)).reduce((acc, key) => {
     let newAcc = acc;
@@ -30,6 +32,7 @@ const genDiff = (obj1, obj2) => {
 const parsers = {
   '.json': (data) => JSON.parse(data),
   '.yml': (data) => yaml.safeLoad(data),
+  '.ini': (data) => ini.parse(data),
 };
 
 const parse = (filepath) => {

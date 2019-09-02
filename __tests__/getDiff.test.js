@@ -21,3 +21,10 @@ test('yaml', () => {
   const diff = String(readFileSync(`${path}diff1`));
   expect(getDiff(before, after)).toBe(diff);
 });
+
+test('ini', () => {
+  const before = `${path}before.ini`;
+  const after = `${path}after.ini`;
+  const diff = String(readFileSync(`${path}diff1`));
+  expect(getDiff(before, after)).toBe(diff);
+});
