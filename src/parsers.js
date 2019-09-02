@@ -8,26 +8,21 @@ import yaml from 'js-yaml';
 
 import ini from 'ini';
 
+const map = (bool1, bool2) => `${bool1}${bool2}`;
+
 const genDiff = (obj1, obj2) => {
   const keys = _.union(_.keys(obj1), _.keys(obj2));
   const result = keys.reduce((acc, key) => {
     const before = `${key}: ${obj1[key]}\n`;
     const after = `${key}: ${obj2[key]}\n`;
-    const obj1HasKey = _.has(obj1, key);
-    const obj2HasKey = _.has(obj2, key);
-    let changes;
-    if (obj1HasKey && obj2HasKey) {
-      changes = _.isEqual(before, after)
+    const changes = {
+      truetrue: (_.isEqual(before, after)
         ? `    ${before}`
-        : `  - ${before}  + ${after}`;
-    }
-    if (obj1HasKey && !obj2HasKey) {
-      changes = `  - ${before}`;
-    }
-    if (!obj1HasKey && obj2HasKey) {
-      changes = `  + ${after}`;
-    }
-    return `${acc}${changes}`;
+        : `  - ${before}  + ${after}`),
+      truefalse: `  - ${before}`,
+      falsetrue: `  + ${after}`,
+    };
+    return `${acc}${changes[map(_.has(obj1, key), _.has(obj2, key))]}`;
   }, '{\n');
   return `${result}}\n`;
 };
