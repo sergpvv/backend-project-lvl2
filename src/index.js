@@ -9,7 +9,6 @@ program
   .option('-f, --format [type]', 'Output format', 'JSON')
   .action((file1, file2) => {
     console.log(genDiff(file1, file2));
-    // console.log(`output format: ${program.format}`);
   })
   .parse(process.argv);
 if (!program.args.length) { program.help(); }
