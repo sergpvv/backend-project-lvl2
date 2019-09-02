@@ -17,3 +17,5 @@ test:
 	npm test
 testw:
 	npm test -- --watch
+test-coverage:
+	npm test -- --coverage
