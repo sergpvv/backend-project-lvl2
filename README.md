@@ -2,6 +2,7 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/6881926f37feb7fe523a/maintainability)](https://codeclimate.com/github/sergpvv/backend-project-lvl2/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6881926f37feb7fe523a/test_coverage)](https://codeclimate.com/github/sergpvv/backend-project-lvl2/test_coverage)
+[![Build Status](https://travis-ci.org/sergpvv/backend-project-lvl2.svg?branch=master)](https://travis-ci.org/sergpvv/backend-project-lvl2)
 
 Console utility. Compares two configuration files and shows a difference.
 
