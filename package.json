@@ -28,6 +28,10 @@
   },
   "author": "Sergei P. Vinogradov",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sergpvv/backend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/sergpvv/backend-project-lvl2#readme",
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
