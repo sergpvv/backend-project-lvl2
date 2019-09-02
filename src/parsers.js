@@ -10,21 +10,21 @@ import ini from 'ini';
 
 const genDiff = (obj1, obj2) => {
   const result = _.union(_.keys(obj1), _.keys(obj2)).reduce((acc, key) => {
-    let newAcc = acc;
-    if (_.has(obj2, key)) {
-      if (_.has(obj1, key)) {
-        if (_.isEqual(obj1[key], obj2[key])) {
-          newAcc = `${acc}    ${key}: ${obj1[key]}\n`;
-        } else {
-          newAcc = `${acc}  - ${key}: ${obj1[key]}\n  + ${key}: ${obj2[key]}\n`;
-        }
-      } else {
-        newAcc = `${acc}  + ${key}: ${obj2[key]}\n`;
-      }
+    let changes;
+    const before = obj1[key];
+    const after = obj2[key];
+    const obj1HasKey = _.has(obj1, key);
+    const obj2HasKey = _.has(obj2, key);
+    if (obj1HasKey && obj2HasKey) {
+      changes = _.isEqual(before, after)
+        ? `    ${key}: ${before}\n`
+        : `  - ${key}: ${before}\n  + ${key}: ${after}\n`;
+    } else if (obj1HasKey) {
+      changes = `  - ${key}: ${before}\n`;
     } else {
-      newAcc = `${acc}  - ${key}: ${obj1[key]}\n`;
+      changes = `  + ${key}: ${after}\n`;
     }
-    return newAcc;
+    return `${acc}${changes}`;
   }, '{\n');
   return `${result}}\n`;
 };
