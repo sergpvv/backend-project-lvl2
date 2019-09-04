@@ -8,23 +8,68 @@ import yaml from 'js-yaml';
 
 import ini from 'ini';
 
-const map = (bool1, bool2) => `${bool1}${bool2}`;
+const twoBoolToString = (bool1, bool2) => `${bool1}${bool2}`;
 
-const genDiff = (obj1, obj2) => {
-  const keys = _.union(_.keys(obj1), _.keys(obj2));
-  const result = keys.reduce((acc, key) => {
-    const before = `${key}: ${obj1[key]}\n`;
-    const after = `${key}: ${obj2[key]}\n`;
-    const changes = {
-      truetrue: (_.isEqual(before, after)
-        ? `    ${before}`
-        : `  - ${before}  + ${after}`),
-      truefalse: `  - ${before}`,
-      falsetrue: `  + ${after}`,
-    };
-    return `${acc}${changes[map(_.has(obj1, key), _.has(obj2, key))]}`;
-  }, '{\n');
-  return `${result}}\n`;
+const isObject = (value) => !(value instanceof Array) && (value instanceof Object);
+
+const stringify = (value, depth) => (isObject(value)
+  ? _.keys(value)
+    .map((key) => `{\n${' '.repeat((depth + 1) * 4)}${key}: ${value[key]}\n${' '.repeat(depth * 4)}}`)
+    .join('')
+  : value);
+
+const render = (diff, before, after) => {
+  const iter = (ast, depthIndent) => {
+    const entries = Object.entries(ast);
+    const result = entries.reduce((acc, [key, {
+      state, valuepath, depth, children,
+    }]) => {
+      const indent = ' '.repeat(depth * 2);
+      const value1 = stringify(_.get(before, valuepath), depth);
+      const value2 = stringify(_.get(after, valuepath), depth);
+      const print = {
+        stayprev: () => `${indent}  ${key}: ${value1}\n`,
+        deleted: () => `${indent}- ${key}: ${value1}\n`,
+        added: () => `${indent}+ ${key}: ${value2}\n`,
+        modified: () => `${indent}- ${key}: ${value1}\n${indent}+ ${key}: ${value2}\n`,
+        nested: () => `${indent}  ${key}: ${iter(children, depth)}`,
+      };
+      return `${acc}${print[state]()}`;
+    }, '{\n');
+    return `${result}${' '.repeat(depthIndent * 4)}}\n`;
+  };
+  return iter(diff, 0);
+};
+
+const stayPrevOrModified = (value1, value2) => (
+  _.isEqual(value1, value2) ? 'stayprev' : 'modified');
+
+const generateDifferences = (before, after) => {
+  const iter = (obj1, obj2, pathAcc, depthAcc) => {
+    const keys = _.union(_.keys(obj1), _.keys(obj2));
+    return keys.reduce((keyAcc, key) => {
+      const value1 = obj1[key];
+      const value2 = obj2[key];
+      const determineState = {
+        truetrue: isObject(value1) && isObject(value2)
+          ? 'nested'
+          : stayPrevOrModified(value1, value2),
+        truefalse: 'deleted',
+        falsetrue: 'added',
+      };
+      const state = determineState[twoBoolToString(_.has(obj1, key), _.has(obj2, key))];
+      const valuepath = pathAcc.concat([key]);
+      const depth = depthAcc + 1;
+      const children = state !== 'nested' ? null : iter(value1, value2, valuepath, depth);
+      return {
+        ...keyAcc,
+        [key]: {
+          state, valuepath, depth, children,
+        },
+      };
+    }, {});
+  };
+  return iter(before, after, [], 0);
 };
 
 const parsers = {
@@ -39,4 +84,11 @@ const parse = (filepath) => {
   return parsers[ext](data);
 };
 
-export default (filepath1, filepath2) => genDiff(parse(filepath1), parse(filepath2));
+export default (filepath1, filepath2) => {
+  const before = parse(filepath1);
+  const after = parse(filepath2);
+  const diff = generateDifferences(before, after);
+  const result = render(diff, before, after);
+  console.log(result);
+  return result;
+};
