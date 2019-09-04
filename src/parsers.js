@@ -24,9 +24,9 @@ const render = (diff, before, after) => {
     const result = entries.reduce((acc, [key, {
       state, valuepath, depth, children,
     }]) => {
-      const indent = ' '.repeat(depth * 2);
-      const value1 = stringify(_.get(before, valuepath), depth);
-      const value2 = stringify(_.get(after, valuepath), depth);
+      const indent = ' '.repeat(depth * 4 + 2);
+      const value1 = stringify(_.get(before, valuepath), depth + 1);
+      const value2 = stringify(_.get(after, valuepath), depth + 1);
       const print = {
         stayprev: () => `${indent}  ${key}: ${value1}\n`,
         deleted: () => `${indent}- ${key}: ${value1}\n`,
@@ -36,9 +36,9 @@ const render = (diff, before, after) => {
       };
       return `${acc}${print[state]()}`;
     }, '{\n');
-    return `${result}${' '.repeat(depthIndent * 4)}}\n`;
+    return `${result}${' '.repeat((depthIndent + 1) * 4)}}\n`;
   };
-  return iter(diff, 0);
+  return iter(diff, -1);
 };
 
 const stayPrevOrModified = (value1, value2) => (
@@ -46,7 +46,7 @@ const stayPrevOrModified = (value1, value2) => (
 
 const generateDifferences = (before, after) => {
   const iter = (obj1, obj2, pathAcc, depthAcc) => {
-    const keys = _.union(_.keys(obj1), _.keys(obj2));
+    const keys = _.union(Object.keys(obj1), Object.keys(obj2));
     return keys.reduce((keyAcc, key) => {
       const value1 = obj1[key];
       const value2 = obj2[key];
@@ -69,7 +69,7 @@ const generateDifferences = (before, after) => {
       };
     }, {});
   };
-  return iter(before, after, [], 0);
+  return iter(before, after, [], -1);
 };
 
 const parsers = {
@@ -89,6 +89,7 @@ export default (filepath1, filepath2) => {
   const after = parse(filepath2);
   const diff = generateDifferences(before, after);
   const result = render(diff, before, after);
-  console.log(result);
+  // console.log(JSON.stringify(diff, null, '  '));
+  // console.log(result);
   return result;
 };
