@@ -1,43 +1,32 @@
 import { readFileSync } from 'fs';
 
-import { genDiff } from '../src';
+import genDiff from '../src/genDiff';
 
-let path;
-let json1;
-let json2;
-let plain1;
-let plain2;
+import { outputFormats } from '../src/utils';
 
-beforeEach(() => {
-  path = `${__dirname}/__fixtures__/`;
-  json1 = String(readFileSync(`${path}json1`));
-  json2 = String(readFileSync(`${path}json2`));
-  plain1 = String(readFileSync(`${path}plain1`));
-  plain2 = String(readFileSync(`${path}plain2`));
-});
+const path = `${__dirname}/__fixtures__/`;
 
-test.each([['.json'], ['.yml'], ['.ini']])(
-  'input: %s; outupt: json',
-  (ext) => {
-    const b1 = `${path}before1${ext}`;
-    const a1 = `${path}after1${ext}`;
-    expect(genDiff(b1, a1, 'json')).toBe(json1);
+const inputFileTypes = ['.json', '.yml', '.ini'];
 
-    const b2 = `${path}before2${ext}`;
-    const a2 = `${path}after2${ext}`;
-    expect(genDiff(b2, a2, 'json')).toBe(json2);
-  },
-);
+const testDataSet = new Set([]);
 
-test.each([['.json'], ['.yml'], ['.ini']])(
-  'input: %s; output: plain',
-  (ext) => {
-    const b1 = `${path}before1${ext}`;
-    const a1 = `${path}after1${ext}`;
-    expect(genDiff(b1, a1, 'plain')).toBe(plain1);
+const diff = {};
 
-    const b2 = `${path}before2${ext}`;
-    const a2 = `${path}after2${ext}`;
-    expect(genDiff(b2, a2, 'plain')).toBe(plain2);
+for (let i = 1; i <= 2; i += 1) {
+  for (let j = 0; j < 3; j += 1) {
+    const format = outputFormats[j];
+    diff[`${format}${i}`] = String(readFileSync(`${path}diff${i}.${format}`));
+    for (let k = 0; k < 3; k += 1) {
+      testDataSet.add([i, inputFileTypes[j], outputFormats[k]]);
+    }
+  }
+}
+
+it.each([...testDataSet])(
+  '#%s; input files: %s; output format: %s',
+  (n, ext, format) => {
+    const before = `${path}before${n}${ext}`;
+    const after = `${path}after${n}${ext}`;
+    expect(genDiff(before, after, format)).toBe(diff[`${format}${n}`]);
   },
 );

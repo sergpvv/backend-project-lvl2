@@ -1,7 +1,7 @@
-import jsonFormatter from './json';
+import basic from './basic';
 
-import plainFormatter from './plain';
+import plain from './plain';
 
-export default jsonFormatter;
+import json from './json';
 
-export { plainFormatter };
+export { basic as default, plain, json };

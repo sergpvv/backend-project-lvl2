@@ -1,34 +1,20 @@
 import { get } from 'lodash';
 
-import isObject from '../utils';
-
-const stringify = (value, depth) => {
-  if (!isObject(value)) { return `${value}\n`; }
-  const result = Object.keys(value).reduce((acc, key) => (
-    `${acc}${' '.repeat((depth + 1) * 4)}${key}: ${stringify(value[key], depth + 1)}`),
-  '{\n');
-  return `${result}${' '.repeat(depth * 4)}}\n`;
-};
-
 export default (diff, before, after) => {
-  const iter = (ast, depthIndent) => {
-    const entries = Object.entries(ast);
-    const result = entries.reduce((acc, [key, {
-      state, valuepath, depth, children,
-    }]) => {
-      const indent = ' '.repeat(depth * 4 + 2);
-      const value1 = stringify(get(before, valuepath), depth + 1);
-      const value2 = stringify(get(after, valuepath), depth + 1);
-      const print = {
-        unaltered: () => `${indent}  ${key}: ${value1}`,
-        removed: () => `${indent}- ${key}: ${value1}`,
-        added: () => `${indent}+ ${key}: ${value2}`,
-        updated: () => `${indent}- ${key}: ${value1}${indent}+ ${key}: ${value2}`,
-        complex: () => `${indent}  ${key}: ${iter(children, depth)}`,
+  const iter = (ast) => Object.entries(ast)
+    .reduce((acc, [key, { type, path, children }]) => {
+      const value1 = get(before, path);
+      const value2 = get(after, path);
+      const toValue = {
+        unaltered: () => value1,
+        removed: () => value1,
+        added: () => value2,
+        updated: () => [value1, value2],
+        complex: () => iter(children),
       };
-      return `${acc}${print[state]()}`;
-    }, '{\n');
-    return `${result}${' '.repeat((depthIndent + 1) * 4)}}\n`;
-  };
-  return iter(diff, -1);
+      const value = toValue[type]();
+      return { ...acc, [key]: { type, value } };
+    }, {});
+  const result = JSON.stringify(iter(diff), null, '  ');
+  return `${result}\n`;
 };

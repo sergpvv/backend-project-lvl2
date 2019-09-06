@@ -1,27 +1,13 @@
 import program from 'commander';
 
-import genAst, { parse } from './parsers';
+import genDiff from './genDiff';
 
-import jsonFormatter, { plainFormatter } from './formatters';
-
-const formats = new Set(['json', 'plain']);
-
-const formatter = {
-  json: jsonFormatter,
-  plain: plainFormatter,
-};
-
-export const genDiff = (filepath1, filepath2, format) => {
-  const before = parse(filepath1);
-  const after = parse(filepath2);
-  const diff = genAst(before, after);
-  return formatter[format](diff, before, after);
-};
+import { outputFormats } from './utils';
 
 program
-  .version('0.0.1', '-v, --version', 'Output the version number')
+  .version('0.1.0', '-v, --version', 'Output the version number')
   .description('Compares two configuration files and shows a difference.')
-  .arguments('<file1> <file2>')
+  .arguments('<filepath1> <filepath2>')
   .option('-f, --format [type]', 'Specify output format', 'json')
   .action((file1, file2) => {
     program.file1 = file1;
@@ -32,9 +18,9 @@ program
 export default () => {
   if (!program.args.length) {
     program.help();
-  } else if (formats.has(program.format)) {
+  } else if (outputFormats.includes(program.format)) {
     console.log(genDiff(program.file1, program.file2, program.format));
   } else {
-    console.log('unknown output format');
+    console.log('Unknown output format!');
   }
 };

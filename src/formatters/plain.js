@@ -2,7 +2,6 @@ import { get } from 'lodash';
 
 import isObject from '../utils';
 
-
 const isNumber = (value) => !Number.isNaN(Number(value));
 
 const stringify = (value) => {
@@ -16,19 +15,19 @@ export default (diff, before, after) => {
   const iter = (ast) => {
     const entries = Object.entries(ast);
     const result = entries.reduce((acc, [, {
-      state, valuepath, children,
+      type, path, children,
     }]) => {
-      const value1 = stringify(get(before, valuepath));
-      const value2 = stringify(get(after, valuepath));
-      const property = `Property '${valuepath.join('.')}' was`;
-      const print = {
+      const value1 = stringify(get(before, path));
+      const value2 = stringify(get(after, path));
+      const property = `Property '${path.join('.')}' was`;
+      const toString = {
         unaltered: () => `${property} been unlatered\n`,
         removed: () => `${property} removed\n`,
         added: () => `${property} added with value: ${value2}\n`,
         updated: () => `${property} updated. From ${value1} to ${value2}\n`,
         complex: () => iter(children),
       };
-      return `${acc}${print[state]()}`;
+      return `${acc}${toString[type]()}`;
     }, '');
     return `${result}`;
   };

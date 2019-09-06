@@ -1,0 +1,88 @@
+{
+  "common": {
+    "type": "complex",
+    "value": {
+      "setting1": {
+        "type": "unaltered",
+        "value": "Value 1"
+      },
+      "setting2": {
+        "type": "removed",
+        "value": "200"
+      },
+      "setting3": {
+        "type": "updated",
+        "value": [
+          true,
+          {
+            "key": "value"
+          }
+        ]
+      },
+      "setting6": {
+        "type": "complex",
+        "value": {
+          "key": {
+            "type": "unaltered",
+            "value": "value"
+          },
+          "ops": {
+            "type": "added",
+            "value": "vops"
+          }
+        }
+      },
+      "follow": {
+        "type": "added",
+        "value": false
+      },
+      "setting4": {
+        "type": "added",
+        "value": "blah blah"
+      },
+      "setting5": {
+        "type": "added",
+        "value": {
+          "key5": "value5"
+        }
+      }
+    }
+  },
+  "group1": {
+    "type": "complex",
+    "value": {
+      "baz": {
+        "type": "updated",
+        "value": [
+          "bas",
+          "bars"
+        ]
+      },
+      "foo": {
+        "type": "unaltered",
+        "value": "bar"
+      },
+      "nest": {
+        "type": "updated",
+        "value": [
+          {
+            "key": "value"
+          },
+          "str"
+        ]
+      }
+    }
+  },
+  "group2": {
+    "type": "removed",
+    "value": {
+      "abc": "12345"
+    }
+  },
+  "group3": {
+    "type": "added",
+    "value": {
+      "fee": "100500"
+    }
+  }
+}

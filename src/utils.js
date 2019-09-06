@@ -1,3 +1,3 @@
-const isObject = (value) => (value instanceof Object) && !(value instanceof Array);
+export const outputFormats = ['basic', 'plain', 'json'];
 
-export default isObject;
+export default (value) => (value instanceof Object);
