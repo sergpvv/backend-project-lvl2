@@ -4,4 +4,6 @@ import plain from './plain';
 
 import json from './json';
 
-export { basic as default, plain, json };
+const formatters = { basic, plain, json };
+
+export default formatters;

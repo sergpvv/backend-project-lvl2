@@ -13,9 +13,21 @@ Second training project by [Hexlet](https://hexlet.io/#features) on the professi
 $ make install
 ```
 
-## Run
-
+## Usage
+### Console utility
 ```sh
 $ gendiff [options] <filepath1> <filepath2>
+
+Options:
+  -v, --version        Output the version number
+  -f, --format [type]  Specify output format (default: "json")
+  -h, --help           output usage information
 ```
+### API
+```
+import genDiff from 'gendiff';
+```
+
 [![asciicast](https://asciinema.org/a/amHVxKbyUwoAxRKVnn27whmH9.svg)](https://asciinema.org/a/amHVxKbyUwoAxRKVnn27whmH9)
+
+[![asciicast](https://asciinema.org/a/SzgEOYjUAHqQVxVNiLgmb42EG.svg)](https://asciinema.org/a/SzgEOYjUAHqQVxVNiLgmb42EG)
