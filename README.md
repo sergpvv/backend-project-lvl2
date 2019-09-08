@@ -4,7 +4,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6881926f37feb7fe523a/test_coverage)](https://codeclimate.com/github/sergpvv/backend-project-lvl2/test_coverage)
 [![Build Status](https://travis-ci.org/sergpvv/backend-project-lvl2.svg?branch=master)](https://travis-ci.org/sergpvv/backend-project-lvl2)
 
-Console utility. Compares two configuration files and shows a difference. 
+Compares two configuration files and shows a difference. 
 Second training project by [Hexlet](https://hexlet.io/#features) on the profession ["JS frontend/backend"](https://hexlet.io/professions/frontend).
 
 ## Setup
@@ -20,7 +20,7 @@ $ gendiff [options] <filepath1> <filepath2>
 
 Options:
   -v, --version        Output the version number
-  -f, --format [type]  Specify output format (default: "json")
+  -f, --format [type]  Specify output format: "basic", "plain" or "json" (default: "json")
   -h, --help           output usage information
 ```
 ### API

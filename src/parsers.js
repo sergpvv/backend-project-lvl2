@@ -12,8 +12,11 @@ const parsers = {
   '.ini': (data) => ini.parse(data),
 };
 
+const getParser = (filetype) => parsers[filetype];
+
 export default (filepath) => {
-  const data = String(readFileSync(filepath));
-  const ext = path.extname(filepath);
-  return parsers[ext](data);
+  const data = readFileSync(filepath, 'utf-8');
+  const filetype = path.extname(filepath);
+  const parse = getParser(filetype);
+  return parse(data);
 };

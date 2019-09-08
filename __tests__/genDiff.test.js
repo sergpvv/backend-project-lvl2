@@ -6,7 +6,7 @@ import { outputFormats } from '../src/utils';
 
 const path = `${__dirname}/__fixtures__/`;
 
-const inputFileTypes = ['.json', '.yml', '.ini'];
+const configTypes = ['.json', '.yml', '.ini'];
 
 const testDataSet = new Set([]);
 
@@ -15,18 +15,18 @@ const diff = {};
 for (let i = 1; i <= 2; i += 1) {
   for (let j = 0; j < 3; j += 1) {
     const format = outputFormats[j];
-    diff[`${format}${i}`] = String(readFileSync(`${path}diff${i}.${format}`));
+    diff[`${format}${i}`] = readFileSync(`${path}diff${i}.${format}`, 'utf-8');
     for (let k = 0; k < 3; k += 1) {
-      testDataSet.add([i, inputFileTypes[j], outputFormats[k]]);
+      testDataSet.add([i, configTypes[j], outputFormats[k]]);
     }
   }
 }
 
 it.each([...testDataSet])(
-  '#%s; input files: %s; output format: %s',
+  `#%s %s => %s`,
   (n, ext, format) => {
-    const before = `${path}before${n}${ext}`;
-    const after = `${path}after${n}${ext}`;
-    expect(genDiff(before, after, format)).toBe(diff[`${format}${n}`]);
+    const first = `${path}before${n}${ext}`;
+    const second = `${path}after${n}${ext}`;
+    expect(genDiff(first, second, format)).toBe(diff[`${format}${n}`]);
   },
 );
