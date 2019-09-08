@@ -23,7 +23,7 @@ for (let i = 1; i <= 2; i += 1) {
 }
 
 it.each([...testDataSet])(
-  `#%s %s => %s`,
+  '#%s %s => %s',
   (n, ext, format) => {
     const first = `${path}before${n}${ext}`;
     const second = `${path}after${n}${ext}`;
