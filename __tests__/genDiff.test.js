@@ -1,5 +1,7 @@
 import { readFileSync } from 'fs';
 
+import { fromPairs } from 'lodash';
+
 import genDiff from '../src/genDiff';
 
 import { outputFormats } from '../src/utils';
@@ -8,25 +10,26 @@ const path = `${__dirname}/__fixtures__/`;
 
 const configTypes = ['.json', '.yml', '.ini'];
 
-const testDataSet = new Set([]);
+const configsComplexity = ['simple', 'nested'];
 
-const diff = {};
+const testDataSet = [...configsComplexity.entries()]
+  .flatMap((complexity) => configTypes
+    .flatMap((type) => outputFormats
+      .map((format) => [complexity, type, format])));
 
-for (let i = 1; i <= 2; i += 1) {
-  for (let j = 0; j < 3; j += 1) {
-    const format = outputFormats[j];
-    diff[`${format}${i}`] = readFileSync(`${path}diff${i}.${format}`, 'utf-8');
-    for (let k = 0; k < 3; k += 1) {
-      testDataSet.add([i, configTypes[j], outputFormats[k]]);
-    }
-  }
-}
+const referenceDiffs = [...configsComplexity.keys()]
+  .map((key) => fromPairs(outputFormats
+    .map((format) => [
+      format,
+      readFileSync(`${path}diff${key}.${format}`, 'utf-8'),
+    ])));
 
-it.each([...testDataSet])(
-  '#%s %s => %s',
-  (n, ext, format) => {
-    const first = `${path}before${n}${ext}`;
-    const second = `${path}after${n}${ext}`;
-    expect(genDiff(first, second, format)).toBe(diff[`${format}${n}`]);
+it.each(testDataSet)(
+  '%s %s configs; output format: "%s"',
+  ([i], type, format) => {
+    const first = `${path}before${i}${type}`;
+    const second = `${path}after${i}${type}`;
+    const diff = genDiff(first, second, format);
+    expect(diff).toBe(referenceDiffs[i][format]);
   },
 );
