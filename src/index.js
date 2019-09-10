@@ -5,7 +5,7 @@ import genDiff from './genDiff';
 import { outputFormats } from './utils';
 
 program
-  .version('0.2.2', '-v, --version', 'Output the version number')
+  .version('0.3.0', '-v, --version', 'Output the version number')
   .description('Compares two configuration files and shows a difference.')
   .arguments('<filepath1> <filepath2>')
   .option('-f, --format [type]', 'Specify output format: "basic", "plain" or "json"', 'json')

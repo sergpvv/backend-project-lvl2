@@ -1,6 +1,10 @@
 import _ from 'lodash';
 
-import parse from './parsers';
+import { readFileSync } from 'fs';
+
+import { extname } from 'path';
+
+import parsers from './parsers';
 
 import formatters from './formatters';
 
@@ -43,11 +47,20 @@ const buildAst = (first, second) => _.union(_.keys(first), _.keys(second)).map((
   return { type, key, value };
 });
 
+const getParser = (configType) => parsers[configType];
+
 const getFormatter = (outputFormat) => formatters[outputFormat];
 
+const getParsedConfig = (filepath) => {
+  const data = readFileSync(filepath, 'utf-8');
+  const configType = extname(filepath);
+  const parse = getParser(configType);
+  return parse(data);
+};
+
 export default (firstConfig, secondConfig, outputFormat) => {
-  const first = parse(firstConfig);
-  const second = parse(secondConfig);
+  const first = getParsedConfig(firstConfig);
+  const second = getParsedConfig(secondConfig);
   const diff = buildAst(first, second);
   const format = getFormatter(outputFormat);
   return format(diff);
