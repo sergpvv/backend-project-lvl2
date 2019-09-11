@@ -7,7 +7,7 @@
     "difference",
     "config"
   ],
-  "main": "dist/genDiff.js",
+  "main": "dist/index.js",
   "bin": {
     "gendiff": "dist/bin/gendiff.js"
   },
