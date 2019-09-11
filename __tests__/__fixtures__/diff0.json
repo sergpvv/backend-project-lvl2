@@ -1,6 +1,6 @@
 {
   "host": {
-    "type": "unaltered",
+    "type": "same",
     "value": "hexlet.io"
   },
   "timeout": {

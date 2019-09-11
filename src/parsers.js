@@ -8,4 +8,4 @@ const parsers = {
   '.ini': parse,
 };
 
-export default parsers;
+export default (configType) => parsers[configType];

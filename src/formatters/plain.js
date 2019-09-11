@@ -18,7 +18,7 @@ const stringify = (value) => {
 const toString = (path) => `Property '${path.join('.')}' was`;
 
 const rendererTypes = {
-  unaltered: (path) => `${toString(path)} been unlatered\n`,
+  same: (path) => `${toString(path)} been unlatered\n`,
   removed: (path) => `${toString(path)} removed\n`,
   added: (path, value) => `${toString(path)} added with value: ${stringify(value)}\n`,
   updated: (path, [oldValue, newValue]) => (

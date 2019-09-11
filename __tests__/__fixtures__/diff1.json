@@ -3,7 +3,7 @@
     "type": "complex",
     "value": {
       "setting1": {
-        "type": "unaltered",
+        "type": "same",
         "value": "Value 1"
       },
       "setting2": {
@@ -23,7 +23,7 @@
         "type": "complex",
         "value": {
           "key": {
-            "type": "unaltered",
+            "type": "same",
             "value": "value"
           },
           "ops": {
@@ -59,7 +59,7 @@
         ]
       },
       "foo": {
-        "type": "unaltered",
+        "type": "same",
         "value": "bar"
       },
       "nest": {

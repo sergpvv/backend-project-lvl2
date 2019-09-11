@@ -16,12 +16,15 @@ $ make install
 ## Usage
 ### Console utility
 ```sh
-$ gendiff [options] <filepath1> <filepath2>
+$ gendiff [options] <firstConfig> <secondConfig>
+
+Compares two configuration files and shows a difference.
 
 Options:
   -v, --version        Output the version number
-  -f, --format [type]  Specify output format: "basic", "plain" or "json" (default: "json")
+  -f, --format [type]  Specify output format: plusminus, plain, json (default: "json")
   -h, --help           output usage information
+
 ```
 ### API
 ```

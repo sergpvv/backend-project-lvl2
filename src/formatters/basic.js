@@ -21,7 +21,7 @@ const removedToStr = (...args) => toString(...args, '-');
 const addedToStr = (...args) => toString(...args, '+');
 
 const rendererTypes = {
-  unaltered: (key, value, depth) => toString(key, value, depth, ' '),
+  same: (key, value, depth) => toString(key, value, depth, ' '),
   removed: (key, value, depth) => removedToStr(key, value, depth),
   added: (key, value, depth) => addedToStr(key, value, depth),
   updated: (key, [oldValue, newValue], depth) => `${removedToStr(key, oldValue, depth)}${addedToStr(key, newValue, depth)}`,

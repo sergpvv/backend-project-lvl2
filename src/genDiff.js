@@ -4,9 +4,9 @@ import { readFileSync } from 'fs';
 
 import { extname } from 'path';
 
-import parsers from './parsers';
+import getParser from './parsers';
 
-import formatters from './formatters';
+import getFormatter from './formatters';
 
 import isObject from './utils';
 
@@ -18,7 +18,7 @@ const nodeTypes = [
     process: (first, second, func) => func(first, second),
   },
   {
-    type: 'unaltered',
+    type: 'same',
     check: (first, second, key) => _.has(first, key) && _.has(second, key)
       && _.isEqual(first[key], second[key]),
     process: _.identity,
@@ -46,10 +46,6 @@ const buildAst = (first, second) => _.union(_.keys(first), _.keys(second)).map((
   const value = process(first[key], second[key], buildAst);
   return { type, key, value };
 });
-
-const getParser = (configType) => parsers[configType];
-
-const getFormatter = (outputFormat) => formatters[outputFormat];
 
 const getParsedConfig = (filepath) => {
   const data = readFileSync(filepath, 'utf-8');

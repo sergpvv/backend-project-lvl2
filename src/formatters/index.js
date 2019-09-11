@@ -4,6 +4,13 @@ import plain from './plain';
 
 import json from './json';
 
-const formatters = { basic, plain, json };
+const formatters = {
+  plusminus: basic,
+  basic,
+  plain,
+  json,
+};
 
-export default formatters;
+export const outputFormats = ['plusminus', 'plain', 'json'];
+
+export default (outputFormat) => formatters[outputFormat];
