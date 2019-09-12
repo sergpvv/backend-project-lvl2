@@ -22,7 +22,7 @@ Compares two configuration files and shows a difference.
 
 Options:
   -v, --version        Output the version number
-  -f, --format [type]  Specify output format: plusminus, plain, json (default: "json")
+  -f, --format [type]  Specify output format: pretty, plain, json (default: "json")
   -h, --help           output usage information
 
 ```
