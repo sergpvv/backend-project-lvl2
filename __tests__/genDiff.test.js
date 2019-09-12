@@ -1,35 +1,15 @@
 import { readFileSync } from 'fs';
 
-import { fromPairs } from 'lodash';
+import genDiff from '../src';
 
-import genDiff, { outputFormats } from '../src';
+const buildFilepath = (filename, filetype) => `${__dirname}/__fixtures__/${filename}.${filetype}`;
 
-const buildFilepath = (name, tail, type) => `${__dirname}/__fixtures__/${name}${tail}${type}`;
-
-const configTypes = ['.json', '.yml', '.ini'];
-
-const diffTypes = { plusminus: 'basic', plain: 'plain', json: 'json' };
-
-const configsComplexity = ['simple', 'nested'];
-
-const testDataSet = [...configsComplexity.entries()]
-  .flatMap(([index, complexity]) => configTypes
-    .flatMap((type) => outputFormats
-      .map((format) => [index, complexity, type, format])));
-
-const referenceDiffs = [...configsComplexity.keys()]
-  .map((key) => fromPairs(outputFormats
-    .map((format) => [
-      diffTypes[format],
-      readFileSync(buildFilepath('diff', key, `.${diffTypes[format]}`), 'utf-8'),
-    ])));
-
-it.each(testDataSet)(
-  '#%s %s %s configs; output format: "%s"',
-  (indexComplexity, complexity, configType, outputFormat) => {
-    const first = buildFilepath('before', indexComplexity, configType);
-    const second = buildFilepath('after', indexComplexity, configType);
-    const diff = referenceDiffs[indexComplexity][diffTypes[outputFormat]];
+it.each([['pretty', 'json'], ['plain', 'ini'], ['json', 'yml']])(
+  'output format: "%s" configs type: %s',
+  (outputFormat, configType) => {
+    const first = buildFilepath('before', configType);
+    const second = buildFilepath('after', configType);
+    const diff = readFileSync(buildFilepath('diff', outputFormat), 'utf-8');
     expect(genDiff(first, second, outputFormat)).toBe(diff);
   },
 );

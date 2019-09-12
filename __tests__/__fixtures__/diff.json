@@ -1,17 +1,21 @@
-{
-  "common": {
+[
+  {
     "type": "complex",
-    "value": {
-      "setting1": {
+    "key": "common",
+    "value": [
+      {
         "type": "same",
+        "key": "setting1",
         "value": "Value 1"
       },
-      "setting2": {
+      {
         "type": "removed",
+        "key": "setting2",
         "value": "200"
       },
-      "setting3": {
+      {
         "type": "updated",
+        "key": "setting3",
         "value": [
           true,
           {
@@ -19,51 +23,61 @@
           }
         ]
       },
-      "setting6": {
+      {
         "type": "complex",
-        "value": {
-          "key": {
+        "key": "setting6",
+        "value": [
+          {
             "type": "same",
+            "key": "key",
             "value": "value"
           },
-          "ops": {
+          {
             "type": "added",
+            "key": "ops",
             "value": "vops"
           }
-        }
+        ]
       },
-      "follow": {
+      {
         "type": "added",
+        "key": "follow",
         "value": false
       },
-      "setting4": {
+      {
         "type": "added",
+        "key": "setting4",
         "value": "blah blah"
       },
-      "setting5": {
+      {
         "type": "added",
+        "key": "setting5",
         "value": {
           "key5": "value5"
         }
       }
-    }
+    ]
   },
-  "group1": {
+  {
     "type": "complex",
-    "value": {
-      "baz": {
+    "key": "group1",
+    "value": [
+      {
         "type": "updated",
+        "key": "baz",
         "value": [
           "bas",
           "bars"
         ]
       },
-      "foo": {
+      {
         "type": "same",
+        "key": "foo",
         "value": "bar"
       },
-      "nest": {
+      {
         "type": "updated",
+        "key": "nest",
         "value": [
           {
             "key": "value"
@@ -71,18 +85,20 @@
           "str"
         ]
       }
-    }
+    ]
   },
-  "group2": {
+  {
     "type": "removed",
+    "key": "group2",
     "value": {
       "abc": "12345"
     }
   },
-  "group3": {
+  {
     "type": "added",
+    "key": "group3",
     "value": {
       "fee": "100500"
     }
   }
-}
+]

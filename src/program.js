@@ -3,7 +3,7 @@ import program from 'commander';
 import genDiff, { outputFormats } from '.';
 
 program
-  .version('0.3.1', '-v, --version', 'Output the version number')
+  .version('0.3.3', '-v, --version', 'Output the version number')
   .description('Compares two configuration files and shows a difference.')
   .arguments('<firstConfig> <secondConfig>')
   .option('-f, --format [type]', `Specify output format: ${outputFormats.join(', ')}`, 'json')

@@ -1,3 +1,8 @@
+Property 'network.host' was been unlatered
+Property 'network.timeout' was updated. From 50 to 20
+Property 'network.proxy' was removed
+Property 'network.follow' was removed
+Property 'network.verbose' was added with value: true
 Property 'common.setting1' was been unlatered
 Property 'common.setting2' was removed
 Property 'common.setting3' was updated. From true to [complex value]
