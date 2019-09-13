@@ -1,3 +1,5 @@
+import { zip } from 'lodash';
+
 import isObject from '../utils';
 
 const indentSpaces = 4;
@@ -16,15 +18,13 @@ const stringify = (data, depth) => {
 
 const toString = (key, value, depth, marker) => `${indent(depth)}  ${marker} ${key}: ${stringify(value, depth + 1)}`;
 
-const removedToStr = (...args) => toString(...args, '-');
-
-const addedToStr = (...args) => toString(...args, '+');
-
 const rendererTypes = {
   same: (key, value, depth) => toString(key, value, depth, ' '),
-  removed: (key, value, depth) => removedToStr(key, value, depth),
-  added: (key, value, depth) => addedToStr(key, value, depth),
-  updated: (key, [oldValue, newValue], depth) => `${removedToStr(key, oldValue, depth)}${addedToStr(key, newValue, depth)}`,
+  removed: (key, value, depth) => toString(key, value, depth, '-'),
+  added: (key, value, depth) => toString(key, value, depth, '+'),
+  updated: (key, values, depth) => zip(values, ['-', '+'])
+    .map(([value, sign]) => toString(key, value, depth, sign))
+    .join(''),
   complex: (key, value, depth, func) => `${indent(depth + 1)}${key}: ${func(value, depth + 1)}`,
 };
 
