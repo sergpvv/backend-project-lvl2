@@ -27,7 +27,7 @@ const nodeTypes = [
     type: 'updated',
     check: (first, second, key) => _.has(first, key) && _.has(second, key)
       && !_.isEqual(first[key], second[key]),
-    process: (oldValue, newValue) => [oldValue, newValue],
+    process: (oldValue, newValue) => ({ oldValue, newValue }),
   },
   {
     type: 'removed',

@@ -21,7 +21,7 @@ const rendererTypes = {
   same: (path) => `${toString(path)} been unlatered`,
   removed: (path) => `${toString(path)} removed`,
   added: (path, value) => `${toString(path)} added with value: ${stringify(value)}`,
-  updated: (path, [oldValue, newValue]) => (
+  updated: (path, { oldValue, newValue }) => (
     `${toString(path)} updated. From ${stringify(oldValue)} to ${stringify(newValue)}`),
   complex: (path, value, func) => func(path, value),
 };

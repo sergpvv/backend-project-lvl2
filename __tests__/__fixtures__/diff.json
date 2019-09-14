@@ -16,12 +16,12 @@
       {
         "type": "updated",
         "key": "setting3",
-        "value": [
-          true,
-          {
+        "value": {
+          "oldValue": true,
+          "newValue": {
             "key": "value"
           }
-        ]
+        }
       },
       {
         "type": "complex",
@@ -65,10 +65,10 @@
       {
         "type": "updated",
         "key": "baz",
-        "value": [
-          "bas",
-          "bars"
-        ]
+        "value": {
+          "oldValue": "bas",
+          "newValue": "bars"
+        }
       },
       {
         "type": "same",
@@ -78,12 +78,12 @@
       {
         "type": "updated",
         "key": "nest",
-        "value": [
-          {
+        "value": {
+          "oldValue": {
             "key": "value"
           },
-          "str"
-        ]
+          "newValue": "str"
+        }
       }
     ]
   },
